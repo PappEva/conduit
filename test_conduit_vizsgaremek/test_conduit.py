@@ -133,6 +133,7 @@ class TestConduit(object):
     #         assert popular_tags_list != 0
     #
     #         # adatok fájlba írása
+    #
 
     # # TC_05 Több oldalas lista bejárása OK
     def test_list_walkthrough(self):
@@ -159,13 +160,16 @@ class TestConduit(object):
             assert page_num.text == actual_page.text
 
     # # TC_06 Új adat bevitel
+    # new article
     #
     # # TC_07 Ismételt és sorozatos adatbevitel adatforrásból
+    # posztok vagy kommentek
     #
     # # TC_08 Meglévő adat módosítás
-    #
+    # posztnál
+
     # # TC_09 Adat vagy adatok törlése
-    #
+    # komment törlése
 
     # TC_11 Kijelentkezés
     def test_logout(self):
