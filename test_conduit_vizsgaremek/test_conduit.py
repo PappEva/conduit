@@ -8,8 +8,6 @@ from selenium.webdriver.common.by import By
 # from selenium.webdriver.support import expected_conditions as EC
 # from selenium.webdriver.support.wait import WebDriverWait
 import time
-
-
 # import csv
 # from FUNCTIONS import ......
 # from ADATOK import .......
@@ -34,8 +32,6 @@ class TestConduit(object):
         accept_cookie_btn = self.browser.find_element(By.XPATH,
                                                       '//button [@class="cookie__bar__buttons__button cookie__bar__buttons__button--accept"]')
         accept_cookie_btn.click()
-        # cookie_accept = self.browser.get_cookie("vue-cookie-accept-decline-cookie-policy-panel")
-        # assert cookie_accept["value"] == "accept"
         time.sleep(2)
 
         # try to find cookie panel
@@ -100,7 +96,20 @@ class TestConduit(object):
 
 # TC_11 Kijelentkezés
     def test_logout(self):
-        login(self.browser)
+        # loginx(self.browser)
+
+        menu_login_btn = self.browser.find_element(By.LINK_TEXT, 'Sign in')
+        menu_login_btn.click()
+        time.sleep(1)
+
+        email_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Email"]')
+        password_input = self.browser.find_element(By.XPATH, '//input[@type="password"]')
+        sign_in_btn = self.browser.find_element(By.XPATH, '//button[contains(text(), "Sign in")]')
+
+        email_input.send_keys('testuser4@gmail.com')
+        password_input.send_keys('Testuser1password')
+        sign_in_btn.click()
+        time.sleep(3)
 
         menu_logout_btn = self.browser.find_element(By.LINK_TEXT, 'Log out')
         menu_logout_btn.click()

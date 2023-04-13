@@ -1,10 +1,8 @@
 from selenium.webdriver.common.by import By
 import time
+import csv
 
-# TC_01 Adatkezelési nyilatkozat használata
-
-# Bejelentkezés
-def login(browser):
+def loginx(browser):
     menu_login_btn = browser.find_element(By.LINK_TEXT, 'Sign in')
     menu_login_btn.click()
     time.sleep(1)
