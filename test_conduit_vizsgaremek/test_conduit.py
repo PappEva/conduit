@@ -64,26 +64,43 @@ class TestConduit(object):
 #         assert registration_popup_msg.text == "Your registration was successful!"
 #
 # # TC_03 Bejelentkezés tesztelése
+#     def test_login(self):
+#         login_btn = self.browser.find_element(By.LINK_TEXT, 'Sign in')
+#         login_btn.click()
+#         time.sleep(2)
+#         assert self.browser.current_url == 'http://localhost:1667/#/register'
+#
+#         # username_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Username"]')
+#         email_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Email"]')
+#         password_input = self.browser.find_element(By.XPATH, '//input[@type="password"]')
+#         sign_up_btn = self.browser.find_element(By.XPATH, '//button[contains(text(), "Sign up")]')
+#
+#         email_input.send_keys('testuser4@gmail.com')
+#         password_input.send_keys('Testuser1password')
+#         sign_up_btn.click()
+#         time.sleep(2)
+#
+#         registration_popup_title = self.browser.find_element(By.XPATH, '//div[@class="swal-title"]')
+#         registration_popup_msg = self.browser.find_element(By.XPATH, '//div[@class="swal-text"]')
+
     def test_login(self):
         login_btn = self.browser.find_element(By.LINK_TEXT, 'Sign in')
         login_btn.click()
-        time.sleep(2)
-        assert self.browser.current_url == 'http://localhost:1667/#/register'
+        time.sleep(1)
+        assert self.browser.current_url == 'http://localhost:1667/#/login'
 
-        # username_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Username"]')
         email_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Email"]')
         password_input = self.browser.find_element(By.XPATH, '//input[@type="password"]')
-        sign_up_btn = self.browser.find_element(By.XPATH, '//button[contains(text(), "Sign up")]')
+        sign_in_btn = self.browser.find_element(By.XPATH, '//button[contains(text(), "Sign in")]')
 
         email_input.send_keys('testuser4@gmail.com')
         password_input.send_keys('Testuser1password')
-        sign_up_btn.click()
-        time.sleep(2)
+        sign_in_btn.click()
+        time.sleep(5)
 
-        registration_popup_title = self.browser.find_element(By.XPATH, '//div[@class="swal-title"]')
-        registration_popup_msg = self.browser.find_element(By.XPATH, '//div[@class="swal-text"]')
-        # assert registration_popup_title.text == "Welcome!"
-        # assert registration_popup_msg.text == "Your registration was successful!"
+        logged_in_user = self.browser.find_element(By.XPATH, '//a [@href="#/@Testuser4/" and @class="nav-link"]')
+        assert logged_in_user.text == 'Testuser4'
+
 #
 # # TC_04 Adatok listázása
 #
