@@ -16,8 +16,6 @@ def loginx(browser):
     sign_in_btn.click()
     time.sleep(3)
 
-# TC_04 Adatok listázása
-
 # TC_05 Több oldalas lista bejárása
 
 # TC_06 Új adat bevitel
