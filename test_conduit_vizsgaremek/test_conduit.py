@@ -99,7 +99,7 @@ class TestConduit(object):
         time.sleep(3)
 
         # adatok listázása
-        tags = self.browser.find_elements(By.XPATH, "//div[@class='sidebar']//div[@class='tag-list']//a")
+        tags = self.browser.find_elements(By.XPATH, '//div[@class="sidebar"]//div[@class="tag-list"]//a')
         popular_tags_list = []
         for tag in tags:
             popular_tags_list.append(tag.text)
@@ -124,7 +124,7 @@ class TestConduit(object):
         time.sleep(3)
 
         # adatok listázása
-        tags = self.browser.find_elements(By.XPATH, "//div[@class='sidebar']//div[@class='tag-list']//a")
+        tags = self.browser.find_elements(By.XPATH, '//div[@class="sidebar"]//div[@class="tag-list"]//a')
         popular_tags_list = []
         for tag in tags:
             popular_tags_list.append(tag.text)
@@ -137,7 +137,7 @@ class TestConduit(object):
 
 # # TC_05 Több oldalas lista bejárása
     def test_list_walkthrough(self):
-        # loginx(self.browser) # Ez nem akar működni, szóval itt egy belépés...
+        # loginx(self.browser) # Ez nem akar működni, szóval itt egy belépés:
 
         menu_login_btn = self.browser.find_element(By.LINK_TEXT, 'Sign in')
         menu_login_btn.click()
@@ -152,13 +152,14 @@ class TestConduit(object):
         sign_in_btn.click()
         time.sleep(3)
 
-        # adatok listázása
-        tags = self.browser.find_elements(By.XPATH, "//div[@class='sidebar']//div[@class='tag-list']//a")
-        popular_tags_list = []
-        for tag in tags:
-            popular_tags_list.append(tag.text)
-        print(popular_tags_list)  # írd ki
-        assert popular_tags_list != 0
+        # Global Feed listázás
+        global_feed_btn = self.browser.find_element(By.XPATH, '//div[@class="nav-link"]')
+        global_feed_btn.click()
+
+        # for tag in tags:
+        #     popular_tags_list.append(tag.text)
+        # print(popular_tags_list)  # írd ki
+        # assert popular_tags_list != 0
 
 
 # # TC_06 Új adat bevitel
