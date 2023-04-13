@@ -28,61 +28,61 @@ class TestConduit(object):
     def teardown_method(self):
         self.browser.quit()
 
-        # # TC_01 Adatkezelési nyilatkozat használata
-        #     def test_cookie(self):
-        #         accept_cookie_btn = self.browser.find_element(By.XPATH,
-        #                                                       '//button [@class="cookie__bar__buttons__button cookie__bar__buttons__button--accept"]')
-        #         accept_cookie_btn.click()
-        #         time.sleep(2)
-        #
-        #         # try to find cookie panel
-        #         assert len(self.browser.find_elements(By.ID, 'cookie-policy-panel')) == 0
+    # TC_01 Adatkezelési nyilatkozat használata
+    def test_cookie(self):
+        accept_cookie_btn = self.browser.find_element(By.XPATH,
+                                                      '//button [@class="cookie__bar__buttons__button cookie__bar__buttons__button--accept"]')
+        accept_cookie_btn.click()
+        time.sleep(2)
 
-        # TC_02 Regisztráció tesztelése
-        #     def test_register(self):
-        #         register_btn = self.browser.find_element(By.LINK_TEXT, 'Sign up')
-        #         register_btn.click()
-        #         time.sleep(2)
-        #         assert self.browser.current_url == 'http://localhost:1667/#/register'
-        #
-        #         username_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Username"]')
-        #         email_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Email"]')
-        #         password_input = self.browser.find_element(By.XPATH, '//input[@type="password"]')
-        #         sign_up_btn = self.browser.find_element(By.XPATH, '//button[contains(text(), "Sign up")]')
-        #
-        #         username_input.send_keys('Testuser4')
-        #         email_input.send_keys('testuser4@gmail.com')
-        #         password_input.send_keys('Testuser1password')
-        #         sign_up_btn.click()
-        #         time.sleep(2)
-        #
-        #         registration_popup_title = self.browser.find_element(By.XPATH, '//div[@class="swal-title"]')
-        #         registration_popup_msg = self.browser.find_element(By.XPATH, '//div[@class="swal-text"]')
-        #         assert registration_popup_title.text == "Welcome!"
-        #         assert registration_popup_msg.text == "Your registration was successful!"
-        #
-        # # # TC_03 Bejelentkezés tesztelése OK
-        # #
-        #     def test_login(self):
-        #         menu_login_btn = self.browser.find_element(By.LINK_TEXT, 'Sign in')
-        #         menu_login_btn.click()
-        #         time.sleep(1)
-        #         assert self.browser.current_url == 'http://localhost:1667/#/login'
-        #
-        #         email_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Email"]')
-        #         password_input = self.browser.find_element(By.XPATH, '//input[@type="password"]')
-        #         sign_in_btn = self.browser.find_element(By.XPATH, '//button[contains(text(), "Sign in")]')
-        #
-        #         email_input.send_keys('testuser4@gmail.com')
-        #         password_input.send_keys('Testuser1password')
-        #         sign_in_btn.click()
-        #         time.sleep(3)
-        #
-        #         logged_in_user = self.browser.find_element(By.XPATH, '//a [@href="#/@Testuser4/" and @class="nav-link"]')
-        #         assert logged_in_user.text == 'Testuser4'
-        #         # assert a menu_logout_btn látszik-e?
+        # try to find cookie panel
+        assert len(self.browser.find_elements(By.ID, 'cookie-policy-panel')) == 0
 
-        # TC_04 Adatok listázása OK
+    # TC_02 Regisztráció tesztelése
+    #     def test_register(self):
+    #         register_btn = self.browser.find_element(By.LINK_TEXT, 'Sign up')
+    #         register_btn.click()
+    #         time.sleep(2)
+    #         assert self.browser.current_url == 'http://localhost:1667/#/register'
+    #
+    #         username_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Username"]')
+    #         email_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Email"]')
+    #         password_input = self.browser.find_element(By.XPATH, '//input[@type="password"]')
+    #         sign_up_btn = self.browser.find_element(By.XPATH, '//button[contains(text(), "Sign up")]')
+    #
+    #         username_input.send_keys('Testuser4')
+    #         email_input.send_keys('testuser4@gmail.com')
+    #         password_input.send_keys('Testuser1password')
+    #         sign_up_btn.click()
+    #         time.sleep(2)
+    #
+    #         registration_popup_title = self.browser.find_element(By.XPATH, '//div[@class="swal-title"]')
+    #         registration_popup_msg = self.browser.find_element(By.XPATH, '//div[@class="swal-text"]')
+    #         assert registration_popup_title.text == "Welcome!"
+    #         assert registration_popup_msg.text == "Your registration was successful!"
+    #
+    # TC_03 Bejelentkezés tesztelése OK
+
+    def test_login(self):
+        menu_login_btn = self.browser.find_element(By.LINK_TEXT, 'Sign in')
+        menu_login_btn.click()
+        time.sleep(1)
+        assert self.browser.current_url == 'http://localhost:1667/#/login'
+
+        email_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Email"]')
+        password_input = self.browser.find_element(By.XPATH, '//input[@type="password"]')
+        sign_in_btn = self.browser.find_element(By.XPATH, '//button[contains(text(), "Sign in")]')
+
+        email_input.send_keys('testuser4@gmail.com')
+        password_input.send_keys('Testuser1password')
+        sign_in_btn.click()
+        time.sleep(3)
+
+        logged_in_user = self.browser.find_element(By.XPATH, '//a [@href="#/@Testuser4/" and @class="nav-link"]')
+        assert logged_in_user.text == 'Testuser4'
+        # assert a menu_logout_btn látszik-e?
+
+    # TC_04 Adatok listázása OK
     def test_datalist(self):
         # loginx(self.browser) # Ez nem akar működni
 
@@ -158,36 +158,35 @@ class TestConduit(object):
             actual_page = self.browser.find_element(By.CSS_SELECTOR, 'li[class="page-item active"]')
             assert page_num.text == actual_page.text
 
-# # TC_06 Új adat bevitel
-#
-# # TC_07 Ismételt és sorozatos adatbevitel adatforrásból
-#
-# # TC_08 Meglévő adat módosítás
-#
-# # TC_09 Adat vagy adatok törlése
-#
+    # # TC_06 Új adat bevitel
+    #
+    # # TC_07 Ismételt és sorozatos adatbevitel adatforrásból
+    #
+    # # TC_08 Meglévő adat módosítás
+    #
+    # # TC_09 Adat vagy adatok törlése
+    #
 
+    # TC_11 Kijelentkezés
+    def test_logout(self):
+        # loginx(self.browser) # Ez nem akar működni
 
-# # TC_11 Kijelentkezés
-#     def test_logout(self):
-#         # loginx(self.browser) # Ez nem akar működni
-#
-#         menu_login_btn = self.browser.find_element(By.LINK_TEXT, 'Sign in')
-#         menu_login_btn.click()
-#         time.sleep(1)
-#
-#         email_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Email"]')
-#         password_input = self.browser.find_element(By.XPATH, '//input[@type="password"]')
-#         sign_in_btn = self.browser.find_element(By.XPATH, '//button[contains(text(), "Sign in")]')
-#
-#         email_input.send_keys('testuser4@gmail.com')
-#         password_input.send_keys('Testuser1password')
-#         sign_in_btn.click()
-#         time.sleep(3)
-#         #kilépés
-#         menu_logout_btn = self.browser.find_element(By.LINK_TEXT, 'Log out')
-#         menu_logout_btn.click()
-#         time.sleep(2)
-#
-#         login_btn = self.browser.find_element(By.LINK_TEXT, 'Sign in')
-#         assert login_btn.is_enabled()
+        menu_login_btn = self.browser.find_element(By.LINK_TEXT, 'Sign in')
+        menu_login_btn.click()
+        time.sleep(1)
+
+        email_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Email"]')
+        password_input = self.browser.find_element(By.XPATH, '//input[@type="password"]')
+        sign_in_btn = self.browser.find_element(By.XPATH, '//button[contains(text(), "Sign in")]')
+
+        email_input.send_keys('testuser4@gmail.com')
+        password_input.send_keys('Testuser1password')
+        sign_in_btn.click()
+        time.sleep(3)
+        # kilépés
+        menu_logout_btn = self.browser.find_element(By.LINK_TEXT, 'Log out')
+        menu_logout_btn.click()
+        time.sleep(2)
+
+        login_btn = self.browser.find_element(By.LINK_TEXT, 'Sign in')
+        assert login_btn.is_enabled()
