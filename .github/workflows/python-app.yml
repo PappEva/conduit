@@ -6,8 +6,8 @@ name: Conduit Python application
 on:
   push:
     branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+#   pull_request:
+#     branches: [ "master" ]
 
 permissions:
   contents: write
