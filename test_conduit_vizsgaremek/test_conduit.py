@@ -41,28 +41,28 @@ class TestConduit(object):
         assert len(self.browser.find_elements(By.ID, 'cookie-policy-panel')) == 0
 
     # TC_02 Regisztráció tesztelése
-    #     def test_registration(self):
-    #         register_btn = self.browser.find_element(By.LINK_TEXT, 'Sign up')
-    #         register_btn.click()
-    #         time.sleep(2)
-    #         assert self.browser.current_url == 'http://localhost:1667/#/register'
-    #
-    #         username_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Username"]')
-    #         email_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Email"]')
-    #         password_input = self.browser.find_element(By.XPATH, '//input[@type="password"]')
-    #         sign_up_btn = self.browser.find_element(By.XPATH, '//button[contains(text(), "Sign up")]')
-    #
-    #         username_input.send_keys(user_login['username'])
-    #         email_input.send_keys(user_login['email'])
-    #         password_input.send_keys(user_login['password'])
-    #         sign_up_btn.click()
-    #         time.sleep(2)
-    #
-    #         registration_popup_title = self.browser.find_element(By.XPATH, '//div[@class="swal-title"]')
-    #         registration_popup_msg = self.browser.find_element(By.XPATH, '//div[@class="swal-text"]')
-    #         assert registration_popup_title.text == "Welcome!"
-    #         assert registration_popup_msg.text == "Your registration was successful!"
-    #
+    def test_registration(self):
+        register_btn = self.browser.find_element(By.LINK_TEXT, 'Sign up')
+        register_btn.click()
+        time.sleep(2)
+        assert self.browser.current_url == 'http://localhost:1667/#/register'
+
+        username_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Username"]')
+        email_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Email"]')
+        password_input = self.browser.find_element(By.XPATH, '//input[@type="password"]')
+        sign_up_btn = self.browser.find_element(By.XPATH, '//button[contains(text(), "Sign up")]')
+
+        username_input.send_keys(user_login['username'])
+        email_input.send_keys(user_login['email'])
+        password_input.send_keys(user_login['password'])
+        sign_up_btn.click()
+        time.sleep(2)
+
+        registration_popup_title = self.browser.find_element(By.XPATH, '//div[@class="swal-title"]')
+        registration_popup_msg = self.browser.find_element(By.XPATH, '//div[@class="swal-text"]')
+        assert registration_popup_title.text == "Welcome!"
+        assert registration_popup_msg.text == "Your registration was successful!"
+
     # TC_03 Bejelentkezés tesztelése OK
 
     def test_login(self):
@@ -127,10 +127,9 @@ class TestConduit(object):
     def test_new_data(self):
         loginx(self.browser)
 
-        menu_new_article_link = self.browser.find_element(By.XPATH, '//a[@href="#/editor"]')
+        menu_new_article_link = WebDriverWait(self.browser, 5).until(EC.presence_of_element_located((By.XPATH, '//a[@href="#/editor"]')))
         menu_new_article_link.click()
 
-        WebDriverWait(self.browser, 5).until(EC.presence_of_element_located((By.XPATH, '//a[@href="#/editor"]')))
         article_title_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Article Title"]')
         article_about_input = self.browser.find_element(By.XPATH, '//input[@placeholder="What\'s this article about?"]')
         article_text_input = self.browser.find_element(By.XPATH,
@@ -170,7 +169,7 @@ class TestConduit(object):
         loginx(self.browser)
 
         # kilépés
-        menu_logout_btn = self.browser.find_element(By.LINK_TEXT, 'Log out')
+        menu_logout_btn = WebDriverWait(self.browser, 5).until(EC.presence_of_element_located((By.LINK_TEXT, 'Log out')))
         menu_logout_btn.click()
         time.sleep(2)
 
