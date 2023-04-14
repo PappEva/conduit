@@ -9,10 +9,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 import time
 
-
-# import csv
-# from FUNCTIONS import ......
-# from ADATOK import .......
+import csv
+from functions import loginx
+from data_for_imports import user_login, article
 
 class TestConduit(object):
     def setup_method(self):
@@ -50,9 +49,9 @@ class TestConduit(object):
     #         password_input = self.browser.find_element(By.XPATH, '//input[@type="password"]')
     #         sign_up_btn = self.browser.find_element(By.XPATH, '//button[contains(text(), "Sign up")]')
     #
-    #         username_input.send_keys('Testuser4')
-    #         email_input.send_keys('testuser4@gmail.com')
-    #         password_input.send_keys('Testuser1password')
+    #         username_input.send_keys(user_login['username'])
+    #         email_input.send_keys(user_login['email'])
+    #         password_input.send_keys(user_login['password'])
     #         sign_up_btn.click()
     #         time.sleep(2)
     #
@@ -73,8 +72,10 @@ class TestConduit(object):
         password_input = self.browser.find_element(By.XPATH, '//input[@type="password"]')
         sign_in_btn = self.browser.find_element(By.XPATH, '//button[contains(text(), "Sign in")]')
 
-        email_input.send_keys('testuser4@gmail.com')
-        password_input.send_keys('Testuser1password')
+        email_input.send_keys(user_login['email'])
+        password_input.send_keys(user_login['password'])
+        # email_input.send_keys('testuser4@gmail.com')
+        # password_input.send_keys('Testuser1password')
         sign_in_btn.click()
         time.sleep(3)
 
@@ -84,20 +85,7 @@ class TestConduit(object):
 
     # TC_04 Adatok listázása OK
     def test_datalist(self):
-        # loginx(self.browser) # Ez nem akar működni
-
-        menu_login_btn = self.browser.find_element(By.LINK_TEXT, 'Sign in')
-        menu_login_btn.click()
-        time.sleep(1)
-
-        email_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Email"]')
-        password_input = self.browser.find_element(By.XPATH, '//input[@type="password"]')
-        sign_in_btn = self.browser.find_element(By.XPATH, '//button[contains(text(), "Sign in")]')
-
-        email_input.send_keys('testuser4@gmail.com')
-        password_input.send_keys('Testuser1password')
-        sign_in_btn.click()
-        time.sleep(3)
+        loginx(self.browser)
 
         # adatok listázása
         tags = self.browser.find_elements(By.XPATH, '//div[@class="sidebar"]//div[@class="tag-list"]//a')
@@ -109,20 +97,7 @@ class TestConduit(object):
 
     # # TC_10 Adatok lementése felületről
     #     def test_save_data_to_file(self):
-    #
-    # #       loginx(self.browser) # a szokásos...
-    #         menu_login_btn = self.browser.find_element(By.LINK_TEXT, 'Sign in')
-    #         menu_login_btn.click()
-    #         time.sleep(1)
-    #
-    #         email_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Email"]')
-    #         password_input = self.browser.find_element(By.XPATH, '//input[@type="password"]')
-    #         sign_in_btn = self.browser.find_element(By.XPATH, '//button[contains(text(), "Sign in")]')
-    #
-    #         email_input.send_keys('testuser4@gmail.com')
-    #         password_input.send_keys('Testuser1password')
-    #         sign_in_btn.click()
-    #         time.sleep(3)
+    # #       loginx(self.browser)
     #
     #         # adatok listázása
     #         tags = self.browser.find_elements(By.XPATH, '//div[@class="sidebar"]//div[@class="tag-list"]//a')
@@ -137,20 +112,7 @@ class TestConduit(object):
 
     # # TC_05 Több oldalas lista bejárása OK
     def test_list_walkthrough(self):
-        # loginx(self.browser) # Ez nem akar működni, szóval itt egy belépés:
-
-        menu_login_btn = self.browser.find_element(By.LINK_TEXT, 'Sign in')
-        menu_login_btn.click()
-        time.sleep(1)
-
-        email_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Email"]')
-        password_input = self.browser.find_element(By.XPATH, '//input[@type="password"]')
-        sign_in_btn = self.browser.find_element(By.XPATH, '//button[contains(text(), "Sign in")]')
-
-        email_input.send_keys('testuser4@gmail.com')
-        password_input.send_keys('Testuser1password')
-        sign_in_btn.click()
-        time.sleep(3)
+        loginx(self.browser)
 
         page_num_list = self.browser.find_elements(By.XPATH, '//li[@class="page-link"]')
 
@@ -158,21 +120,12 @@ class TestConduit(object):
             page_num.click()
             actual_page = self.browser.find_element(By.CSS_SELECTOR, 'li[class="page-item active"]')
             assert page_num.text == actual_page.text
+            # furcsa ez az assert?, kevés a 2 oldal...
+
 
     # # TC_06 Új adat bevitel - New Article
     def test_new_data(self):
-        # loginx(self.browser) # Ez nem akar működni, szóval itt egy belépés:
-
-        menu_login_btn = self.browser.find_element(By.LINK_TEXT, 'Sign in')
-        menu_login_btn.click()
-        time.sleep(1)
-        email_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Email"]')
-        password_input = self.browser.find_element(By.XPATH, '//input[@type="password"]')
-        sign_in_btn = self.browser.find_element(By.XPATH, '//button[contains(text(), "Sign in")]')
-        email_input.send_keys('testuser4@gmail.com')
-        password_input.send_keys('Testuser1password')
-        sign_in_btn.click()
-        time.sleep(3)
+        loginx(self.browser)
 
         menu_new_article_link = self.browser.find_element(By.XPATH, '//a[@href="#/editor"]')
         menu_new_article_link.click()
@@ -185,18 +138,21 @@ class TestConduit(object):
         article_tags_input = self.browser.find_element(By.CSS_SELECTOR, 'input.ti-new-tag-input')
         publish_article_btn = self.browser.find_element(By.XPATH, '//button[@type="submit"]')
 
-        # article_title_input.send_keys(article['title'])
-        # article_about_input.send_keys(article['about'])
-        # article_text_input.send_keys(article['text'])
-        # article_tags_input.send_keys(article['tags'])
+        article_title_input.send_keys(article['title'])
+        article_about_input.send_keys(article['about'])
+        article_text_input.send_keys(article['text'])
+        article_tags_input.send_keys(article['tags'])
+        publish_article_btn.click()
+
+        # article_title_input.send_keys('Tavaszi gyerekdal')
+        # article_about_input.send_keys('dalszöveg')
+        # article_text_input.send_keys(
+        #     'Tavaszi szél vizet áraszt, virágom, virágom. Minden madár társat választ, virágom, virágom.')
+        # article_tags_input.send_keys('gyerek', 'dalok')
         # publish_article_btn.click()
 
-        article_title_input.send_keys('Tavaszi gyerekdal')
-        article_about_input.send_keys('dalszöveg')
-        article_text_input.send_keys(
-            'Tavaszi szél vizet áraszt,. virágom, virágom. Minden madár társat választ,. virágom, virágom.')
-        article_tags_input.send_keys('gyerek', 'dalok')
-        publish_article_btn.click()
+        time.sleep(1)
+        assert self.browser.current_url == 'http://localhost:1667/#/articles/'+(article['url'])
 
     # # TC_07 Ismételt és sorozatos adatbevitel adatforrásból
     # def test_repeated_data_from_file
@@ -210,20 +166,7 @@ class TestConduit(object):
 
     # TC_11 Kijelentkezés
     def test_logout(self):
-        # loginx(self.browser) # Ez nem akar működni
-
-        menu_login_btn = self.browser.find_element(By.LINK_TEXT, 'Sign in')
-        menu_login_btn.click()
-        time.sleep(1)
-
-        email_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Email"]')
-        password_input = self.browser.find_element(By.XPATH, '//input[@type="password"]')
-        sign_in_btn = self.browser.find_element(By.XPATH, '//button[contains(text(), "Sign in")]')
-
-        email_input.send_keys('testuser4@gmail.com')
-        password_input.send_keys('Testuser1password')
-        sign_in_btn.click()
-        time.sleep(3)
+        loginx(self.browser)
 
         # kilépés
         menu_logout_btn = self.browser.find_element(By.LINK_TEXT, 'Log out')
