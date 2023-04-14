@@ -18,6 +18,9 @@ class TestConduit(object):
         service = Service(executable_path=ChromeDriverManager().install())
         options = Options()
         options.add_experimental_option("detach", True)
+        options.add_argument('--headless')
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-dev-shm-usage')
         self.browser = webdriver.Chrome(service=service, options=options)
         URL = 'http://localhost:1667/#/'
         self.browser.get(URL)
@@ -74,8 +77,6 @@ class TestConduit(object):
 
         email_input.send_keys(user_login['email'])
         password_input.send_keys(user_login['password'])
-        # email_input.send_keys('testuser4@gmail.com')
-        # password_input.send_keys('Testuser1password')
         sign_in_btn.click()
         time.sleep(3)
 
@@ -120,7 +121,6 @@ class TestConduit(object):
             page_num.click()
             actual_page = self.browser.find_element(By.CSS_SELECTOR, 'li[class="page-item active"]')
             assert page_num.text == actual_page.text
-            # furcsa ez az assert?, kevés a 2 oldal...
 
 
     # # TC_06 Új adat bevitel - New Article
@@ -153,6 +153,7 @@ class TestConduit(object):
 
         time.sleep(1)
         assert self.browser.current_url == 'http://localhost:1667/#/articles/'+(article['url'])
+        # ??? vagy az oldalon kellene keresni valamire
 
     # # TC_07 Ismételt és sorozatos adatbevitel adatforrásból
     # def test_repeated_data_from_file
