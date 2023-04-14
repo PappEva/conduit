@@ -5,8 +5,8 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 # from selenium.webdriver.support.ui import Select
 # from selenium.webdriver.common.keys import Keys
-# from selenium.webdriver.support import expected_conditions as EC
-# from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
 import time
 
 
@@ -39,7 +39,7 @@ class TestConduit(object):
         assert len(self.browser.find_elements(By.ID, 'cookie-policy-panel')) == 0
 
     # TC_02 Regisztráció tesztelése
-    #     def test_register(self):
+    #     def test_registration(self):
     #         register_btn = self.browser.find_element(By.LINK_TEXT, 'Sign up')
     #         register_btn.click()
     #         time.sleep(2)
@@ -80,7 +80,7 @@ class TestConduit(object):
 
         logged_in_user = self.browser.find_element(By.XPATH, '//a [@href="#/@Testuser4/" and @class="nav-link"]')
         assert logged_in_user.text == 'Testuser4'
-        # assert a menu_logout_btn látszik-e?
+        # assert - általánosabb elemre kellene ellenőrizni: log out, settings, your feed v new article
 
     # TC_04 Adatok listázása OK
     def test_datalist(self):
@@ -108,7 +108,7 @@ class TestConduit(object):
         assert popular_tags_list != 0
 
     # # TC_10 Adatok lementése felületről
-    #     def test_data_save(self):
+    #     def test_save_data_to_file(self):
     #
     # #       loginx(self.browser) # a szokásos...
     #         menu_login_btn = self.browser.find_element(By.LINK_TEXT, 'Sign in')
@@ -159,17 +159,54 @@ class TestConduit(object):
             actual_page = self.browser.find_element(By.CSS_SELECTOR, 'li[class="page-item active"]')
             assert page_num.text == actual_page.text
 
-    # # TC_06 Új adat bevitel
-    # new article
-    #
+    # # TC_06 Új adat bevitel - New Article
+    def test_new_data(self):
+        # loginx(self.browser) # Ez nem akar működni, szóval itt egy belépés:
+
+        menu_login_btn = self.browser.find_element(By.LINK_TEXT, 'Sign in')
+        menu_login_btn.click()
+        time.sleep(1)
+        email_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Email"]')
+        password_input = self.browser.find_element(By.XPATH, '//input[@type="password"]')
+        sign_in_btn = self.browser.find_element(By.XPATH, '//button[contains(text(), "Sign in")]')
+        email_input.send_keys('testuser4@gmail.com')
+        password_input.send_keys('Testuser1password')
+        sign_in_btn.click()
+        time.sleep(3)
+
+        menu_new_article_link = self.browser.find_element(By.XPATH, '//a[@href="#/editor"]')
+        menu_new_article_link.click()
+
+        WebDriverWait(self.browser, 5).until(EC.presence_of_element_located((By.XPATH, '//a[@href="#/editor"]')))
+        article_title_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Article Title"]')
+        article_about_input = self.browser.find_element(By.XPATH, '//input[@placeholder="What\'s this article about?"]')
+        article_text_input = self.browser.find_element(By.XPATH,
+                                                       '//textarea[@placeholder="Write your article (in markdown)"]')
+        article_tags_input = self.browser.find_element(By.CSS_SELECTOR, 'input.ti-new-tag-input')
+        publish_article_btn = self.browser.find_element(By.XPATH, '//button[@type="submit"]')
+
+        # article_title_input.send_keys(article['title'])
+        # article_about_input.send_keys(article['about'])
+        # article_text_input.send_keys(article['text'])
+        # article_tags_input.send_keys(article['tags'])
+        # publish_article_btn.click()
+
+        article_title_input.send_keys('Tavaszi gyerekdal')
+        article_about_input.send_keys('dalszöveg')
+        article_text_input.send_keys(
+            'Tavaszi szél vizet áraszt,. virágom, virágom. Minden madár társat választ,. virágom, virágom.')
+        article_tags_input.send_keys('gyerek', 'dalok')
+        publish_article_btn.click()
+
     # # TC_07 Ismételt és sorozatos adatbevitel adatforrásból
+    # def test_repeated_data_from_file
     # posztok vagy kommentek
     #
     # # TC_08 Meglévő adat módosítás
-    # posztnál
+    # def test_modify_article(self):
 
     # # TC_09 Adat vagy adatok törlése
-    # komment törlése
+    # def test_delete_article(self):
 
     # TC_11 Kijelentkezés
     def test_logout(self):
@@ -187,6 +224,7 @@ class TestConduit(object):
         password_input.send_keys('Testuser1password')
         sign_in_btn.click()
         time.sleep(3)
+
         # kilépés
         menu_logout_btn = self.browser.find_element(By.LINK_TEXT, 'Log out')
         menu_logout_btn.click()
