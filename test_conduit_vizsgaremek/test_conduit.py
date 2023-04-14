@@ -9,9 +9,10 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 import time
 
-import csv
+# import csv
 from functions import loginx
 from data_for_imports import user_login, article
+
 
 class TestConduit(object):
     def setup_method(self):
@@ -96,21 +97,6 @@ class TestConduit(object):
         print(popular_tags_list)
         assert popular_tags_list != 0
 
-    # # TC_10 Adatok lementése felületről
-    #     def test_save_data_to_file(self):
-    # #       loginx(self.browser)
-    #
-    #         # adatok listázása
-    #         tags = self.browser.find_elements(By.XPATH, '//div[@class="sidebar"]//div[@class="tag-list"]//a')
-    #         popular_tags_list = []
-    #         for tag in tags:
-    #             popular_tags_list.append(tag.text)
-    #         print(popular_tags_list)
-    #         assert popular_tags_list != 0
-    #
-    #         # adatok fájlba írása
-    #
-
     # # TC_05 Több oldalas lista bejárása OK
     def test_list_walkthrough(self):
         loginx(self.browser)
@@ -122,13 +108,14 @@ class TestConduit(object):
             actual_page = self.browser.find_element(By.CSS_SELECTOR, 'li[class="page-item active"]')
             assert page_num.text == actual_page.text
 
-
     # # TC_06 Új adat bevitel - New Article
     def test_new_data(self):
         loginx(self.browser)
 
-        menu_new_article_link = WebDriverWait(self.browser, 5).until(EC.presence_of_element_located((By.XPATH, '//a[@href="#/editor"]')))
+        menu_new_article_link = WebDriverWait(self.browser, 5).until(
+            EC.presence_of_element_located((By.XPATH, '//a[@href="#/editor"]')))
         menu_new_article_link.click()
+        time.sleep(3)
 
         article_title_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Article Title"]')
         article_about_input = self.browser.find_element(By.XPATH, '//input[@placeholder="What\'s this article about?"]')
@@ -151,7 +138,7 @@ class TestConduit(object):
         # publish_article_btn.click()
 
         time.sleep(1)
-        assert self.browser.current_url == 'http://localhost:1667/#/articles/'+(article['url'])
+        assert self.browser.current_url == 'http://localhost:1667/#/articles/' + (article['url'])
         # ??? vagy az oldalon kellene keresni valamire
 
     # # TC_07 Ismételt és sorozatos adatbevitel adatforrásból
@@ -164,12 +151,28 @@ class TestConduit(object):
     # # TC_09 Adat vagy adatok törlése
     # def test_delete_article(self):
 
+    # # TC_10 Adatok lementése felületről
+    #     def test_save_data_to_file(self):
+    # #       loginx(self.browser)
+    #
+    #         # adatok listázása
+    #         tags = self.browser.find_elements(By.XPATH, '//div[@class="sidebar"]//div[@class="tag-list"]//a')
+    #         popular_tags_list = []
+    #         for tag in tags:
+    #             popular_tags_list.append(tag.text)
+    #         print(popular_tags_list)
+    #         assert popular_tags_list != 0
+    #
+    #         # adatok fájlba írása
+    #
+
     # TC_11 Kijelentkezés
     def test_logout(self):
         loginx(self.browser)
 
         # kilépés
-        menu_logout_btn = WebDriverWait(self.browser, 5).until(EC.presence_of_element_located((By.LINK_TEXT, 'Log out')))
+        menu_logout_btn = WebDriverWait(self.browser, 5).until(
+            EC.presence_of_element_located((By.LINK_TEXT, 'Log out')))
         menu_logout_btn.click()
         time.sleep(2)
 
