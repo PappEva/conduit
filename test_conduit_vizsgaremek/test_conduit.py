@@ -179,7 +179,7 @@ class TestConduit(object):
             content = saved_content.read()
         print(content)
         print(popular_tags_list)
-        # assert content == popular_tags_list
+        assert content == popular_tags_list # EZ IGY MEGHAL.
 
 # TC_11 Kijelentkezés
     def test_logout(self):
