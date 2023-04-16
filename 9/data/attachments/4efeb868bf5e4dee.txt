@@ -1,3 +1,0 @@
-['lorem', 'ipsum', 'dolor', 'nisil', 'urna', 'nunc', 'laoreet', 'dorum', 'loret', 'nibih', 'mitast', 'leo', 'gyerek', 'dalok']
-lorem, ipsum, dolor, nisil, urna, nunc, laoreet, dorum, loret, nibih, mitast, leo, gyerek, dalok, 
-['lorem', 'ipsum', 'dolor', 'nisil', 'urna', 'nunc', 'laoreet', 'dorum', 'loret', 'nibih', 'mitast', 'leo', 'gyerek', 'dalok']
