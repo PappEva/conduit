@@ -157,29 +157,30 @@ class TestConduit(object):
     def test_collect_data(self):
         loginx(self.browser)
 
-        # tag adatok listázása és fájlba írása
+        # tag adatok begyűjtése listába
         tags_on_page = self.browser.find_elements(By.XPATH, '//div[@class="sidebar"]//div[@class="tag-list"]//a')
         popular_tags_list = []
         for tag in tags_on_page:
             popular_tags_list.append(tag.text)
-        print(popular_tags_list)
         assert popular_tags_list != 0
-        time.sleep(4)
+        time.sleep(2)
 
-        # lista fájlba mentése
+        # lista fájlba mentése, soronként egy tag
         with open('collected_tag_list.csv', 'w') as csvfile:
-    # with open('test_conduit_vizsgaremek/collected_tag_list.csv', 'w') as csvfile:
             for row in popular_tags_list:
-                csvfile.write(row+", ") # a fájlban "sorban tárolt adatok"
-                # csvfile.write()
+                csvfile.write(row+"\n")
+            # print(popular_tags_list)
 
-        # Létrejött fájl tartalmának összevetése a memóriában tárolt listával
+        # létrejött fájl tartalmának visszaolvasása listába (soremelés törléssel)
+        list_from_file = []
         with open('collected_tag_list.csv', 'r') as saved_content:
-    # with open('test_conduit_vizsgaremek/collected_tag_list.csv', 'w') as saved_content:
-            content = saved_content.read()
-        print(content)
-        print(popular_tags_list)
-        assert content == popular_tags_list # EZ IGY MEGHAL.
+           for row in saved_content:
+               list_from_file.append(row.rstrip())
+        # print(list_from_file)
+
+        # összevetése a memóriában tárolt listával
+        # print(popular_tags_list)
+        assert list_from_file == popular_tags_list
 
 # TC_11 Kijelentkezés
     def test_logout(self):
