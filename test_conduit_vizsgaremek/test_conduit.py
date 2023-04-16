@@ -19,9 +19,9 @@ class TestConduit(object):
         service = Service(executable_path=ChromeDriverManager().install())
         options = Options()
         options.add_experimental_option("detach", True)
-        # options.add_argument('--headless')
-        # options.add_argument('--no-sandbox')
-        # options.add_argument('--disable-dev-shm-usage')
+        options.add_argument('--headless')
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-dev-shm-usage')
         self.browser = webdriver.Chrome(service=service, options=options)
         URL = 'http://localhost:1667/#/'
         self.browser.get(URL)
@@ -31,7 +31,7 @@ class TestConduit(object):
     def teardown_method(self):
         self.browser.quit()
 
-    # TC_01 Adatkezelési nyilatkozat használata
+    # TC_01 Adatkezelési nyilatkozat használata ########################################################################
     def test_cookie(self):
         # Van cookie panel az oldalon?
         assert len(self.browser.find_elements(By.ID, 'cookie-policy-panel')) != 0
@@ -44,7 +44,7 @@ class TestConduit(object):
         # Eltűnt a cookie panel?
         assert len(self.browser.find_elements(By.ID, 'cookie-policy-panel')) == 0
 
-    # TC_02 Regisztráció tesztelése
+    # TC_02 Regisztráció tesztelése ####################################################################################
     def test_registration(self):
         register_btn = self.browser.find_element(By.LINK_TEXT, 'Sign up')
         register_btn.click()
@@ -67,7 +67,7 @@ class TestConduit(object):
         assert registration_popup_title.text == "Welcome!"
         assert registration_popup_msg.text == "Your registration was successful!"
 
-    # TC_03 Bejelentkezés tesztelése
+    # TC_03 Bejelentkezés tesztelése ###################################################################################
 
     def test_login(self):
         menu_login_btn = self.browser.find_element(By.LINK_TEXT, 'Sign in')
@@ -88,7 +88,7 @@ class TestConduit(object):
             EC.presence_of_element_located((By.LINK_TEXT, 'Log out')))
         assert menu_logout_btn.is_enabled()
 
-    # TC_04 Adatok listázása
+    # TC_04 Adatok listázása ###########################################################################################
     def test_datalist(self):
         loginx(self.browser)
 
@@ -100,7 +100,7 @@ class TestConduit(object):
         print(popular_tags_list)
         assert popular_tags_list != 0
 
-    # TC_05 Több oldalas lista bejárása
+    # TC_05 Több oldalas lista bejárása ################################################################################
     def test_list_walkthrough(self):
         loginx(self.browser)
 
@@ -111,7 +111,7 @@ class TestConduit(object):
             actual_page = self.browser.find_element(By.CSS_SELECTOR, 'li[class="page-item active"]')
             assert page_num.text == actual_page.text
 
-    # TC_06 Új adat bevitel - New Article
+    # TC_06 Új adat bevitel - New Article ##############################################################################
     def test_new_data(self):
         loginx(self.browser)
 
@@ -139,11 +139,11 @@ class TestConduit(object):
         assert new_article_title.text == (article['title'])
         assert self.browser.current_url == 'http://localhost:1667/#/articles/' + (article['url'])
 
-    # # TC_07 Ismételt és sorozatos adatbevitel adatforrásból
+    # # TC_07 Ismételt és sorozatos adatbevitel adatforrásból ##########################################################
     # def test_repeated_data_from_file
     # posztok vagy kommentek
     #
-    # TC_08 Meglévő adat módosítás (user profil bio módosítása)
+    # TC_08 Meglévő adat módosítás (user profil bio módosítása) ########################################################
     def test_modify_data(self):
         loginx(self.browser)
 
@@ -164,7 +164,7 @@ class TestConduit(object):
         short_bio_input = WebDriverWait(self.browser, 5).until(
             EC.presence_of_element_located((By.XPATH, '//textarea[@placeholder="Short bio about you"]')))
         short_bio_input.clear()
-        short_bio_input.send_keys('It is a modified bio.')
+        short_bio_input.send_keys('This is a modified bio.')
         update_settings_btn = self.browser.find_element(By.XPATH,
                                                         '//button[@class="btn btn-lg btn-primary pull-xs-right"]')
         update_settings_btn.click()
@@ -185,13 +185,12 @@ class TestConduit(object):
         # print(user_bio_text_after)
 
         assert user_bio_text_before != user_bio_text_after
-        assert user_bio_text_after == 'It is a modified bio.' #fájlból behúzásra átírni
+        assert user_bio_text_after == 'This is a modified bio.'  # fájlból behúzásra átírni
 
-
-        # # TC_09 Adat vagy adatok törlése
+        # # TC_09 Adat vagy adatok törlése #############################################################################
         # def test_delete_article(self):
 
-        # TC_10 Adatok lementése felületről
+        # TC_10 Adatok lementése felületről ############################################################################
 
     def test_collect_data(self):
         loginx(self.browser)
@@ -221,7 +220,7 @@ class TestConduit(object):
 
         assert list_from_file == popular_tags_list
 
-    # TC_11 Kijelentkezés
+    # TC_11 Kijelentkezés ##############################################################################################
     def test_logout(self):
 
         loginx(self.browser)
