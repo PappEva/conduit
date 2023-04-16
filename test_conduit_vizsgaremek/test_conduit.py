@@ -166,7 +166,8 @@ class TestConduit(object):
         time.sleep(2)
 
         # lista fájlba mentése, soronként egy tag
-        with open('collected_tag_list.csv', 'w') as csvfile:
+        # # with open('collected_tag_list.csv', 'w') as csvfile:
+        with open('/test_conduit_vizsgaremek/collected_tag_list.csv', 'w') as csvfile:
             for row in popular_tags_list:
                 csvfile.write(row+"\n")
             # print(popular_tags_list)
@@ -174,6 +175,7 @@ class TestConduit(object):
         # létrejött fájl tartalmának visszaolvasása listába (soremelés törléssel)
         list_from_file = []
         with open('collected_tag_list.csv', 'r') as saved_content:
+        # with open('/test_conduit_vizsgaremek/collected_tag_list.csv', 'r') as saved_content:
            for row in saved_content:
                list_from_file.append(row.rstrip())
         # print(list_from_file)
