@@ -166,8 +166,8 @@ class TestConduit(object):
         time.sleep(2)
 
         # lista fájlba mentése, soronként egy tag
-        # # with open('collected_tag_list.csv', 'w') as csvfile:
-        with open('/test_conduit_vizsgaremek/collected_tag_list.csv', 'w') as csvfile:
+        with open('collected_tag_list.csv', 'w') as csvfile:
+        # with open('/test_conduit_vizsgaremek/collected_tag_list.csv', 'w') as csvfile:
             for row in popular_tags_list:
                 csvfile.write(row+"\n")
             # print(popular_tags_list)
