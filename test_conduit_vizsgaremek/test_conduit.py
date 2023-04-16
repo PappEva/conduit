@@ -19,9 +19,9 @@ class TestConduit(object):
         service = Service(executable_path=ChromeDriverManager().install())
         options = Options()
         options.add_experimental_option("detach", True)
-        options.add_argument('--headless')
-        options.add_argument('--no-sandbox')
-        options.add_argument('--disable-dev-shm-usage')
+        # options.add_argument('--headless')
+        # options.add_argument('--no-sandbox')
+        # options.add_argument('--disable-dev-shm-usage')
         self.browser = webdriver.Chrome(service=service, options=options)
         URL = 'http://localhost:1667/#/'
         self.browser.get(URL)
@@ -121,7 +121,8 @@ class TestConduit(object):
         time.sleep(3)
 
         # article_title_input = self.browser.find_element(By.XPATH, '//input[@placeholder="Article Title"]') #DEL
-        article_title_input = WebDriverWait(self.browser, 5).until(EC.presence_of_element_located((By.XPATH, '//input[@placeholder="Article Title"]')))
+        article_title_input = WebDriverWait(self.browser, 5).until(
+            EC.presence_of_element_located((By.XPATH, '//input[@placeholder="Article Title"]')))
         article_about_input = self.browser.find_element(By.XPATH, '//input[@placeholder="What\'s this article about?"]')
         article_text_input = self.browser.find_element(By.XPATH,
                                                        '//textarea[@placeholder="Write your article (in markdown)"]')
@@ -142,18 +143,56 @@ class TestConduit(object):
     # def test_repeated_data_from_file
     # posztok vagy kommentek
     #
-    # TC_08 Meglévő adat módosítás
-    # def test_modify_article(self):
-    #     loginx(self.browser)
-    #
-    #     url_user_profile = ('http://localhost:1667/#/@' + (user_login["username"]) + '/')
-    #     self.browser.get(url_user_profile)
-    #     time.sleep(4)
+    # TC_08 Meglévő adat módosítás (user profil bio módosítása)
+    def test_modify_data(self):
+        loginx(self.browser)
 
-    # # TC_09 Adat vagy adatok törlése
-    # def test_delete_article(self):
+        # user profil oldalon lévő bio szövegének mentése
+        url_user_profile = ('http://localhost:1667/#/@' + (user_login["username"]) + '/')
+        self.browser.get(url_user_profile)
+        menu_settings_link = WebDriverWait(self.browser, 5).until(
+            EC.presence_of_element_located((By.LINK_TEXT, 'Settings')))
+        user_bio_text_before = self.browser.find_element(By.TAG_NAME, 'p').text
+        # print(user_bio_text_before)
 
-    # TC_10 Adatok lementése felületről
+        # settings oldal betöltése
+        menu_settings_link.click()
+        # time.sleep(3)
+        print(self.browser.current_url)
+
+        # "Short bio about you" adat módosítása
+        short_bio_input = WebDriverWait(self.browser, 5).until(
+            EC.presence_of_element_located((By.XPATH, '//textarea[@placeholder="Short bio about you"]')))
+        short_bio_input.clear()
+        short_bio_input.send_keys('It is a modified bio.')
+        update_settings_btn = self.browser.find_element(By.XPATH,
+                                                        '//button[@class="btn btn-lg btn-primary pull-xs-right"]')
+        update_settings_btn.click()
+        time.sleep(4)
+
+        # Popup ablak kezelése ...
+        update_successful_popup = self.browser.find_element(By.XPATH,
+                                                            '//button[@class="swal-button swal-button--confirm"]')
+        update_successful_popup.click()
+
+        # user profil oldalon lévő bio új szövegének ellenőrzése
+        url_user_profile = ('http://localhost:1667/#/@' + (user_login["username"]) + '/')
+        self.browser.get(url_user_profile)
+        time.sleep(3)
+        # menu_settings_link = WebDriverWait(self.browser, 5).until(
+        #     EC.presence_of_element_located((By.LINK_TEXT, 'Settings')))
+        user_bio_text_after = self.browser.find_element(By.TAG_NAME, 'p').text
+        # print(user_bio_text_after)
+
+        assert user_bio_text_before != user_bio_text_after
+        assert user_bio_text_after == 'It is a modified bio.' #fájlból behúzásra átírni
+
+
+        # # TC_09 Adat vagy adatok törlése
+        # def test_delete_article(self):
+
+        # TC_10 Adatok lementése felületről
+
     def test_collect_data(self):
         loginx(self.browser)
 
@@ -167,24 +206,22 @@ class TestConduit(object):
 
         # lista fájlba mentése, soronként egy tag
         with open('collected_tag_list.csv', 'w') as csvfile:
-        # with open('/test_conduit_vizsgaremek/collected_tag_list.csv', 'w') as csvfile:
+            # with open('/test_conduit_vizsgaremek/collected_tag_list.csv', 'w') as csvfile:
             for row in popular_tags_list:
-                csvfile.write(row+"\n")
+                csvfile.write(row + "\n")
             # print(popular_tags_list)
 
         # létrejött fájl tartalmának visszaolvasása listába (soremelés törléssel)
         list_from_file = []
         with open('collected_tag_list.csv', 'r') as saved_content:
-        # with open('/test_conduit_vizsgaremek/collected_tag_list.csv', 'r') as saved_content:
-           for row in saved_content:
-               list_from_file.append(row.rstrip())
+            # with open('/test_conduit_vizsgaremek/collected_tag_list.csv', 'r') as saved_content:
+            for row in saved_content:
+                list_from_file.append(row.rstrip())
         # print(list_from_file)
 
-        # összevetése a memóriában tárolt listával
-        # print(popular_tags_list)
         assert list_from_file == popular_tags_list
 
-# TC_11 Kijelentkezés
+    # TC_11 Kijelentkezés
     def test_logout(self):
 
         loginx(self.browser)
