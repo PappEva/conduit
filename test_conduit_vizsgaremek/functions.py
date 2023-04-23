@@ -9,7 +9,7 @@ def cookie_function(browser):
     accept_cookie_btn = browser.find_element(By.XPATH,
                                              '//button [@class="cookie__bar__buttons__button cookie__bar__buttons__button--accept"]')
     accept_cookie_btn.click()
-    time.sleep(1)
+    time.sleep(3)
 
 
 def login_function(browser):
@@ -24,7 +24,7 @@ def login_function(browser):
     email_input.send_keys(user_login['email'])
     password_input.send_keys(user_login['password'])
     sign_in_btn.click()
-    # time.sleep(3)
+    time.sleep(3)
     # menu_logout_btn = WebDriverWait(browser, 30).until(EC.presence_of_element_located((By.LINK_TEXT, 'Log out')))
     menu_logout_btn = WebDriverWait(browser, 15).until(
         EC.presence_of_element_located((By.PARTIAL_LINK_TEXT, 'Log out')))
