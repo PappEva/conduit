@@ -9,7 +9,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 import time
 
 import csv
-from functions import loginx
+from functions import login_function
 from data_for_imports import user_login, article
 
 
@@ -90,7 +90,7 @@ class TestConduit(object):
 
     # TC_04 Adatok listázása ###########################################################################################
     def test_datalist(self):
-        loginx(self.browser)
+        login_function(self.browser)
 
         # adatok listázása
         tags = self.browser.find_elements(By.XPATH, '//div[@class="sidebar"]//div[@class="tag-list"]//a')
@@ -103,7 +103,7 @@ class TestConduit(object):
 
     # TC_05 Több oldalas lista bejárása ################################################################################
     def test_list_walkthrough(self):
-        loginx(self.browser)
+        login_function(self.browser)
 
         page_num_list = self.browser.find_elements(By.XPATH, '//li[@class="page-link"]')
 
@@ -115,7 +115,7 @@ class TestConduit(object):
 
     # TC_06 Új adat bevitel - New Article ##############################################################################
     def test_new_data(self):
-        loginx(self.browser)
+        login_function(self.browser)
 
         menu_new_article_link = WebDriverWait(self.browser, 5).until(
             EC.presence_of_element_located((By.XPATH, '//a[@href="#/editor"]')))
@@ -148,7 +148,7 @@ class TestConduit(object):
     #
     # TC_08 Meglévő adat módosítás (user profil bio módosítása) ########################################################
     def test_modify_data(self):
-        loginx(self.browser)
+        login_function(self.browser)
 
         # user profil oldalon lévő bio szövegének mentése
         url_user_profile = ('http://localhost:1667/#/@' + (user_login["username"]) + '/')
@@ -195,7 +195,7 @@ class TestConduit(object):
 
     # TC_10 Adatok lementése felületről ############################################################################
     def test_collect_data(self):
-        loginx(self.browser)
+        login_function(self.browser)
 
         # tag adatok begyűjtése listába
         tags_on_page = self.browser.find_elements(By.XPATH, '//div[@class="sidebar"]//div[@class="tag-list"]//a')
