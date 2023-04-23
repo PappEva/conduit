@@ -1,3 +1,4 @@
+# Imports
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
@@ -7,6 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 import time
 import csv
+import allure
 from functions import login_function, cookie_function, data_for_delete_function
 from data_for_imports import user_registration, user_login, article, article_for_delete, bio_data_for_modify
 
@@ -29,6 +31,7 @@ class TestConduit(object):
         self.browser.quit()
 
     # TC_01 Adatkezelési nyilatkozat használata ########################################################################
+    @allure.title('Adatkezelési nyilatkozat elfogadása')
     def test_cookie(self):
         # Van cookie panel az oldalon?
         assert len(self.browser.find_elements(By.ID, 'cookie-policy-panel')) != 0
@@ -42,6 +45,7 @@ class TestConduit(object):
         assert len(self.browser.find_elements(By.ID, 'cookie-policy-panel')) == 0
 
     # TC_02 Regisztráció tesztelése ####################################################################################
+    @allure.title('Regisztráció új felhasználóval')
     def test_registration(self):
         cookie_function(self.browser)
 
@@ -76,6 +80,7 @@ class TestConduit(object):
         registration_ok_button.click()
 
     # TC_03 Bejelentkezés tesztelése ###################################################################################
+    @allure.title('Bejelentkezés regisztrált felhasználóval')
     def test_login(self):
         cookie_function(self.browser)
 
@@ -95,11 +100,15 @@ class TestConduit(object):
         sign_in_btn.click()
 
         # Megjelent a belépés utáni felhasználói felületen a logout link?
-        menu_logout_btn = WebDriverWait(self.browser, 5).until(
-            EC.presence_of_element_located((By.LINK_TEXT, 'Log out')))
+        # menu_logout_btn = WebDriverWait(self.browser, 5).until(EC.presence_of_element_located((By.LINK_TEXT, 'Log out')))
+        # menu_logout_btn = WebDriverWait(self.browser, 15).until(
+        #     EC.presence_of_all_elements_located((By.XPATH, '//button[@class="btn btn-lg btn-primary pull-xs-right"]')))
+        menu_logout_btn = WebDriverWait(self.browser, 15).until(
+            EC.presence_of_element_located((By.PARTIAL_LINK_TEXT, 'Log out')))
         assert menu_logout_btn.is_enabled()
 
     # TC_04 Adatok listázása ###########################################################################################
+    @allure.title('Adatok listázása')
     def test_datalist(self):
         cookie_function(self.browser)
         login_function(self.browser)
@@ -115,6 +124,7 @@ class TestConduit(object):
         assert popular_tags_list != 0
 
     # TC_05 Több oldalas lista bejárása ################################################################################
+    @allure.title('Több oldalas lista bejárása')
     def test_list_walkthrough(self):
         cookie_function(self.browser)
         login_function(self.browser)
@@ -128,12 +138,13 @@ class TestConduit(object):
             time.sleep(1)
             page_num_list.append(page_btns)
 
-        # Oldalszám lista elemszáma megegyezik az aktuális oldalszámmal (string -> int alakítás), illetve az oldalak számával
+        # Oldalszám lista elemszáma megegyezik az aktuális oldalszámmal (string -> int alakítás) és az oldalak számával
         actual_page = self.browser.find_element(By.CSS_SELECTOR, 'li[class="page-item active"]')
         assert len(page_num_list) == int(actual_page.text)
         assert len(page_num_list) == len(page_btns)
 
     # TC_06 Új adat bevitel - New Article ##############################################################################
+    @allure.title('Új adat bevitel, új cikk')
     def test_new_data(self):
         cookie_function(self.browser)
         login_function(self.browser)
@@ -166,6 +177,7 @@ class TestConduit(object):
         assert self.browser.current_url == 'http://localhost:1667/#/articles/' + (article['url'])
 
     # # TC_07 Ismételt és sorozatos adatbevitel adatforrásból ##########################################################
+    @allure.title('Ismételt és sorozatos adatbevitel adatforrásból, kommentek')
     def test_repeated_data_from_file(self):
         cookie_function(self.browser)
         login_function(self.browser)
@@ -200,6 +212,7 @@ class TestConduit(object):
                 assert row[0] in comments_texts
 
     # TC_08 Meglévő adat módosítás (user profil bio módosítása) ########################################################
+    @allure.title('Meglévő adat módosítás (user profil bio)')
     def test_modify_data(self):
         cookie_function(self.browser)
         login_function(self.browser)
@@ -242,6 +255,7 @@ class TestConduit(object):
         assert user_bio_text_after == (bio_data_for_modify['text'])
 
     # # TC_09 Adat vagy adatok törlése #############################################################################
+    @allure.title('Adat törlése, cikk')
     def test_delete_article(self):
 
         # Bejelentkezés, új bejegyzés létrehozása (data_for_imports.py fájlból)
@@ -271,6 +285,7 @@ class TestConduit(object):
         assert len(self.browser.find_elements(By.PARTIAL_LINK_TEXT, f'{article_for_delete["title"]}')) == 0
 
     # TC_10 Adatok lementése felületről ############################################################################
+    @allure.title('Adatok lementése felületről, tag lista')
     def test_collect_data(self):
         cookie_function(self.browser)
         login_function(self.browser)
@@ -301,6 +316,7 @@ class TestConduit(object):
         assert list_from_file == popular_tags_list
 
     # TC_11 Kijelentkezés ##############################################################################################
+    @allure.title('Kijelentkezés')
     def test_logout(self):
         cookie_function(self.browser)
         login_function(self.browser)
