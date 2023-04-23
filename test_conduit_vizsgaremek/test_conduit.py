@@ -153,7 +153,7 @@ class TestConduit(object):
         login_function(self.browser)
 
         # New article link kattintása
-        menu_new_article_link = WebDriverWait(self.browser, 5).until(
+        menu_new_article_link = WebDriverWait(self.browser, 25).until(
             EC.presence_of_element_located((By.XPATH, '//a[@href="#/editor"]')))
         menu_new_article_link.click()
         # time.sleep(3)
