@@ -97,7 +97,6 @@ class TestConduit(object):
         # Megjelent a belépés utáni felhasználói felületen a logout link?
         menu_logout_btn = WebDriverWait(self.browser, 5).until(
             EC.presence_of_element_located((By.LINK_TEXT, 'Log out')))
-
         assert menu_logout_btn.is_enabled()
 
     # TC_04 Adatok listázása ###########################################################################################
@@ -105,7 +104,7 @@ class TestConduit(object):
         cookie_function(self.browser)
         login_function(self.browser)
 
-        # Adatok listába gyűjtése
+        # Tag adatok listába gyűjtése
         tags = self.browser.find_elements(By.XPATH, '//div[@class="sidebar"]//div[@class="tag-list"]//a')
         popular_tags_list = []
         for tag in tags:
@@ -182,8 +181,8 @@ class TestConduit(object):
         comment_box = self.browser.find_element(By.XPATH, '//textarea[@placeholder="Write a comment..."]')
 
         # Adatforrás megnyitása, beolvasása, és az adatok betöltése
-        with open('comments.csv', 'r') as file:
-            # with open('test_conduit_vizsgaremek/comments.csv', 'r') as file:
+        # with open('comments.csv', 'r') as file:
+        with open('test_conduit_vizsgaremek/comments.csv', 'r') as file:
             comment_rows = csv.reader(file, delimiter=',')
             for row in comment_rows:
                 comment_box.send_keys(row[0])
