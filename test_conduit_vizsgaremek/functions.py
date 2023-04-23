@@ -5,6 +5,12 @@ import time
 from data_for_imports import user_login
 # import csv
 
+def cookie_function(browser):
+    accept_cookie_btn = browser.find_element(By.XPATH,
+                                                  '//button [@class="cookie__bar__buttons__button cookie__bar__buttons__button--accept"]')
+    accept_cookie_btn.click()
+    time.sleep(1)
+
 
 def login_function(browser):
     menu_login_btn = browser.find_element(By.LINK_TEXT, 'Sign in')

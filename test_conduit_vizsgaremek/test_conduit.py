@@ -9,7 +9,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 import time
 
 import csv
-from functions import login_function
+from functions import login_function, cookie_function
 from data_for_imports import user_login, article
 
 
@@ -18,9 +18,9 @@ class TestConduit(object):
         service = Service(executable_path=ChromeDriverManager().install())
         options = Options()
         options.add_experimental_option("detach", True)
-        options.add_argument('--headless')
-        options.add_argument('--no-sandbox')
-        options.add_argument('--disable-dev-shm-usage')
+        # options.add_argument('--headless')
+        # options.add_argument('--no-sandbox')
+        # options.add_argument('--disable-dev-shm-usage')
         self.browser = webdriver.Chrome(service=service, options=options)
         URL = 'http://localhost:1667/#/'
         self.browser.get(URL)
@@ -45,6 +45,8 @@ class TestConduit(object):
 
     # TC_02 Regisztráció tesztelése ####################################################################################
     def test_registration(self):
+        cookie_function(self.browser)
+
         register_btn = self.browser.find_element(By.LINK_TEXT, 'Sign up')
         register_btn.click()
         # time.sleep(2)
@@ -69,6 +71,8 @@ class TestConduit(object):
 
     # TC_03 Bejelentkezés tesztelése ###################################################################################
     def test_login(self):
+        cookie_function(self.browser)
+
         menu_login_btn = self.browser.find_element(By.LINK_TEXT, 'Sign in')
         menu_login_btn.click()
         # time.sleep(1)
@@ -90,6 +94,7 @@ class TestConduit(object):
 
     # TC_04 Adatok listázása ###########################################################################################
     def test_datalist(self):
+        cookie_function(self.browser)
         login_function(self.browser)
 
         # adatok listázása
@@ -103,18 +108,24 @@ class TestConduit(object):
 
     # TC_05 Több oldalas lista bejárása ################################################################################
     def test_list_walkthrough(self):
+        cookie_function(self.browser)
         login_function(self.browser)
 
-        page_num_list = self.browser.find_elements(By.XPATH, '//li[@class="page-link"]')
-
-        for page_num in page_num_list:
+        # oldalszám gombok listába gyűjtése
+        page_num_list = []
+        page_btn = self.browser.find_elements(By.XPATH, '//a[@class="page-link"]')
+        for page_num in page_btn:
             page_num.click()
-            actual_page = self.browser.find_element(By.CSS_SELECTOR, 'li[class="page-item active"]')
+            time.sleep(1)
+            page_num_list.append(page_num)
 
-        assert page_num.text == actual_page.text
+        # oldalszám lista elemszáma megegyezik az aktuális oldalszámmal (string -> int alakítás)?
+        actual_page = self.browser.find_element(By.CSS_SELECTOR, 'li[class="page-item active"]')
+        assert len(page_num_list) == int(actual_page.text)
 
     # TC_06 Új adat bevitel - New Article ##############################################################################
     def test_new_data(self):
+        cookie_function(self.browser)
         login_function(self.browser)
 
         menu_new_article_link = WebDriverWait(self.browser, 5).until(
@@ -148,6 +159,7 @@ class TestConduit(object):
     #
     # TC_08 Meglévő adat módosítás (user profil bio módosítása) ########################################################
     def test_modify_data(self):
+        cookie_function(self.browser)
         login_function(self.browser)
 
         # user profil oldalon lévő bio szövegének mentése
@@ -195,6 +207,7 @@ class TestConduit(object):
 
     # TC_10 Adatok lementése felületről ############################################################################
     def test_collect_data(self):
+        cookie_function(self.browser)
         login_function(self.browser)
 
         # tag adatok begyűjtése listába
@@ -225,17 +238,17 @@ class TestConduit(object):
 
     # TC_11 Kijelentkezés ##############################################################################################
     def test_logout(self):
-
+        cookie_function(self.browser)
         login_function(self.browser)
 
-        # kilépés
+        # kilépés gomb azonosítása és kattintás
         menu_logout_btn = WebDriverWait(self.browser, 5).until(
             EC.presence_of_element_located((By.LINK_TEXT, 'Log out')))
         menu_logout_btn.click()
         time.sleep(2)
 
+        # Megjelent újra a login gomb?
         menu_login_btn = WebDriverWait(self.browser, 5).until(
             EC.presence_of_element_located((By.LINK_TEXT, 'Sign in')))
-        # menu_login_btn = self.browser.find_element(By.LINK_TEXT, 'Sign in')
 
         assert menu_login_btn.is_enabled()
