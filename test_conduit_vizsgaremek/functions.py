@@ -55,3 +55,12 @@ def data_for_delete_function(browser):
 
     # new_article_for_delete_title = WebDriverWait(browser, 5).until(EC.presence_of_element_located((By.TAG_NAME, 'h1')))
     # print(new_article_for_delete_title)
+
+
+def create_comment(browser):
+    comment_input = browser.find_element(By.XPATH, '//textarea[@placeholder="Write a comment..."]')
+    post_comment_button = WebDriverWait(browser, 15).until(
+        EC.presence_of_element_located((By.XPATH, '//button[@class="btn btn-sm btn-primary"]')))
+    comment_input.send_keys("Ez egy teszt komment.")
+    post_comment_button.click()
+    time.sleep(5)

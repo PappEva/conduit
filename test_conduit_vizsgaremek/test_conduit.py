@@ -18,9 +18,9 @@ class TestConduit(object):
         service = Service(executable_path=ChromeDriverManager().install())
         options = Options()
         options.add_experimental_option("detach", True)
-        # options.add_argument('--headless')
-        # options.add_argument('--no-sandbox')
-        # options.add_argument('--disable-dev-shm-usage')
+        options.add_argument('--headless')
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-dev-shm-usage')
         self.browser = webdriver.Chrome(service=service, options=options)
         URL = 'http://localhost:1667/#/'
         self.browser.get(URL)
@@ -168,29 +168,35 @@ class TestConduit(object):
     def test_repeated_data_from_file(self):
         cookie_function(self.browser)
         login_function(self.browser)
-
-        article_to_comment = self.browser.find_element(By.XPATH, "//h1[contains(text(), 'Lorem ipsum dolor sit amet')]")
-        article_to_comment.click()
         time.sleep(1)
-        comment_box = self.browser.find_element(By.XPATH, "//textarea")
-        with open('test_conduit/comments.csv', 'r', encoding='utf-8') as file:
-            csvreader = csv.reader(file, delimiter=',')
-            next(csvreader)
-            for row in csvreader:
-                comment_box.send_keys(row[0])
-                self.browser.find_element(By.XPATH, "//button[contains(text(),'Post Comment')]").click()
-                time.sleep(3)
-                comments_ = self.browser.find_elements(By.XPATH, "//p[@class='card-text']")
-                for i in comments_:
-                    assert comments_[0].text == row[0]
 
-        # comment_input = WebDriverWait(self.browser, 10).until(EC.presence_of_element_located((By.XPATH, '//textarea[@placeholder="Write a comment..."]')))
-        # comment_input.send_keys(comment["text"])
-        # post_comment_button = self.browser.find_element(By.XPATH, '//button[@class="btn btn-sm btn-primary"]')
-        # post_comment_button.click()
-        #
-        # new_comment = WebDriverWait(self.browser, 10).until(EC.presence_of_all_elements_located((By.XPATH, '//div[@class="card"]')))[0]
-        # assert new_comment.is_displayed()
+        # Keresek egy cikket, amihez kommenteket írok
+        article_to_comment = self.browser.find_element(By.XPATH, "//h1[contains(text(), 'Lorem ipsum dolor sit amet')]")
+        # article_to_comment = WebDriverWait(self.browser, 10).until(
+        #     EC.presence_of_all_elements_located((By.XPATH, "//h1[contains(text(), 'Lorem ipsum dolor sit amet')]")))
+        article_to_comment.click()
+        time.sleep(2)
+
+        comment_box = self.browser.find_element(By.XPATH, '//textarea[@placeholder="Write a comment..."]')
+
+        # Adatforrás megnyitása, beolvasása, és az adatok betöltése
+        with open('comments.csv', 'r') as file:
+            # with open('test_conduit_vizsgaremek/comments.csv', 'r') as file:
+            comment_rows = csv.reader(file, delimiter=',')
+            for row in comment_rows:
+                comment_box.send_keys(row[0])
+                self.browser.find_element(By.XPATH, '//button[@class="btn btn-sm btn-primary"]').click()
+                time.sleep(1)
+
+            # Oldalon megjelent kommentek szövegének listába olvasása
+            comments_list = self.browser.find_elements(By.XPATH, "//p[@class='card-text']")
+            comments_texts = []
+            for i in comments_list:
+                comments_texts.append(i.text)
+
+            # Elküldött kommentek és az előző lista összehasonlítása
+            for row in comment_rows:
+                assert row[0] in comments_texts
 
     # TC_08 Meglévő adat módosítás (user profil bio módosítása) ########################################################
     def test_modify_data(self):
