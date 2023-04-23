@@ -5,8 +5,8 @@ user_registration = {
 }
 
 user_login = {
-    'username': 'Testuser4',
-    'email': 'testuser4@gmail.com',
+    'username': 'Testuser3',
+    'email': 'testuser3@gmail.com',
     'password': 'Testuser1password',
 }
 
