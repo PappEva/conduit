@@ -25,7 +25,7 @@ class TestConduit(object):
         URL = 'http://localhost:1667/#/'
         self.browser.get(URL)
         self.browser.maximize_window()
-        time.sleep(2) # ez biztosan kell ide?
+        time.sleep(2)
 
     def teardown_method(self):
         self.browser.quit()
@@ -110,8 +110,7 @@ class TestConduit(object):
             EC.presence_of_element_located((By.CSS_SELECTOR, 'a[href="#/@Testuser4/"]')))
         assert profile.text == "Testuser4"
 
-
-    # TC_04 Adatok listázása ###########################################################################################
+    # TC_04 Adatok listázása ##########################################################################################
     @allure.title('Adatok listázása')
     def test_datalist(self):
         cookie_function(self.browser)
