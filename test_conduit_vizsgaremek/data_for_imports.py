@@ -1,3 +1,9 @@
+user_registration = {
+    'username': 'Testuser12345',
+    'email': 'testuser12345@gmail.com',
+    'password': 'Testuser1password',
+}
+
 user_login = {
     'username': 'Testuser4',
     'email': 'testuser4@gmail.com',

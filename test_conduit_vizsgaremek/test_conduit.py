@@ -8,7 +8,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 import time
 import csv
 from functions import login_function, cookie_function, data_for_delete_function
-from data_for_imports import user_login, article, article_for_delete, bio_data_for_modify
+from data_for_imports import user_registration, user_login, article, article_for_delete, bio_data_for_modify
 
 
 class TestConduit(object):
@@ -57,18 +57,23 @@ class TestConduit(object):
         password_input = self.browser.find_element(By.XPATH, '//input[@type="password"]')
         sign_up_btn = self.browser.find_element(By.XPATH, '//button[contains(text(), "Sign up")]')
 
-        username_input.send_keys(user_login['username'])
-        email_input.send_keys(user_login['email'])
-        password_input.send_keys(user_login['password'])
+        username_input.send_keys(user_registration['username'])
+        email_input.send_keys(user_registration['email'])
+        password_input.send_keys(user_registration['password'])
         sign_up_btn.click()
         time.sleep(2)
 
         # Regisztráció után felugró ablak kezelése és tartalmának ellenőrzése
-        registration_popup_title = self.browser.find_element(By.XPATH, '//div[@class="swal-title"]')
+        registration_popup_title = WebDriverWait(self.browser, 5).until(
+            EC.presence_of_element_located((By.XPATH, '//div[@class="swal-title"]')))
         registration_popup_msg = self.browser.find_element(By.XPATH, '//div[@class="swal-text"]')
 
         assert registration_popup_title.text == "Welcome!"
         assert registration_popup_msg.text == "Your registration was successful!"
+
+        registration_ok_button = self.browser.find_element(By.XPATH,
+                                                           '//button[@class="swal-button swal-button--confirm"]')
+        registration_ok_button.click()
 
     # TC_03 Bejelentkezés tesztelése ###################################################################################
     def test_login(self):
