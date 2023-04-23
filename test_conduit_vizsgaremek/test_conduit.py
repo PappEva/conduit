@@ -18,14 +18,14 @@ class TestConduit(object):
         service = Service(executable_path=ChromeDriverManager().install())
         options = Options()
         options.add_experimental_option("detach", True)
-        # options.add_argument('--headless')
-        # options.add_argument('--no-sandbox')
-        # options.add_argument('--disable-dev-shm-usage')
+        options.add_argument('--headless')
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-dev-shm-usage')
         self.browser = webdriver.Chrome(service=service, options=options)
         URL = 'http://localhost:1667/#/'
         self.browser.get(URL)
         self.browser.maximize_window()
-        # time.sleep(2)
+        time.sleep(2) # ez biztosan kell ide?
 
     def teardown_method(self):
         self.browser.quit()
