@@ -6,7 +6,7 @@ from data_for_imports import user_login
 # import csv
 
 
-def loginx(browser):
+def login_function(browser):
     menu_login_btn = browser.find_element(By.LINK_TEXT, 'Sign in')
     menu_login_btn.click()
     time.sleep(2)

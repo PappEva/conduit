@@ -3,7 +3,6 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
-# from selenium.webdriver.support.ui import Select
 # from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
@@ -64,11 +63,11 @@ class TestConduit(object):
 
         registration_popup_title = self.browser.find_element(By.XPATH, '//div[@class="swal-title"]')
         registration_popup_msg = self.browser.find_element(By.XPATH, '//div[@class="swal-text"]')
+
         assert registration_popup_title.text == "Welcome!"
         assert registration_popup_msg.text == "Your registration was successful!"
 
     # TC_03 Bejelentkezés tesztelése ###################################################################################
-
     def test_login(self):
         menu_login_btn = self.browser.find_element(By.LINK_TEXT, 'Sign in')
         menu_login_btn.click()
@@ -86,6 +85,7 @@ class TestConduit(object):
 
         menu_logout_btn = WebDriverWait(self.browser, 5).until(
             EC.presence_of_element_located((By.LINK_TEXT, 'Log out')))
+
         assert menu_logout_btn.is_enabled()
 
     # TC_04 Adatok listázása ###########################################################################################
@@ -98,6 +98,7 @@ class TestConduit(object):
         for tag in tags:
             popular_tags_list.append(tag.text)
         print(popular_tags_list)
+
         assert popular_tags_list != 0
 
     # TC_05 Több oldalas lista bejárása ################################################################################
@@ -109,7 +110,8 @@ class TestConduit(object):
         for page_num in page_num_list:
             page_num.click()
             actual_page = self.browser.find_element(By.CSS_SELECTOR, 'li[class="page-item active"]')
-            assert page_num.text == actual_page.text
+
+        assert page_num.text == actual_page.text
 
     # TC_06 Új adat bevitel - New Article ##############################################################################
     def test_new_data(self):
@@ -136,6 +138,7 @@ class TestConduit(object):
         publish_article_btn.click()
 
         new_article_title = WebDriverWait(self.browser, 5).until(EC.presence_of_element_located((By.TAG_NAME, 'h1')))
+
         assert new_article_title.text == (article['title'])
         assert self.browser.current_url == 'http://localhost:1667/#/articles/' + (article['url'])
 
@@ -187,11 +190,10 @@ class TestConduit(object):
         assert user_bio_text_before != user_bio_text_after
         assert user_bio_text_after == 'This is a modified bio.'  # fájlból behúzásra átírni
 
-        # # TC_09 Adat vagy adatok törlése #############################################################################
+    # # TC_09 Adat vagy adatok törlése #############################################################################
         # def test_delete_article(self):
 
-        # TC_10 Adatok lementése felületről ############################################################################
-
+    # TC_10 Adatok lementése felületről ############################################################################
     def test_collect_data(self):
         loginx(self.browser)
 
@@ -218,12 +220,13 @@ class TestConduit(object):
                 list_from_file.append(row.rstrip())
         # print(list_from_file)
 
+        # fájlból visszaolvasott lista és az oldalról eredetileg begyűjtött lista összehasonlítása ellenőrzésként
         assert list_from_file == popular_tags_list
 
     # TC_11 Kijelentkezés ##############################################################################################
     def test_logout(self):
 
-        loginx(self.browser)
+        login_function(self.browser)
 
         # kilépés
         menu_logout_btn = WebDriverWait(self.browser, 5).until(
@@ -234,4 +237,5 @@ class TestConduit(object):
         menu_login_btn = WebDriverWait(self.browser, 5).until(
             EC.presence_of_element_located((By.LINK_TEXT, 'Sign in')))
         # menu_login_btn = self.browser.find_element(By.LINK_TEXT, 'Sign in')
+
         assert menu_login_btn.is_enabled()
