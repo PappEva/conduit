@@ -18,9 +18,9 @@ class TestConduit(object):
         service = Service(executable_path=ChromeDriverManager().install())
         options = Options()
         options.add_experimental_option("detach", True)
-        options.add_argument('--headless')
-        options.add_argument('--no-sandbox')
-        options.add_argument('--disable-dev-shm-usage')
+        # options.add_argument('--headless')
+        # options.add_argument('--no-sandbox')
+        # options.add_argument('--disable-dev-shm-usage')
         self.browser = webdriver.Chrome(service=service, options=options)
         URL = 'http://localhost:1667/#/'
         self.browser.get(URL)
@@ -103,9 +103,13 @@ class TestConduit(object):
         # menu_logout_btn = WebDriverWait(self.browser, 5).until(EC.presence_of_element_located((By.LINK_TEXT, 'Log out')))
         # menu_logout_btn = WebDriverWait(self.browser, 15).until(
         #     EC.presence_of_all_elements_located((By.XPATH, '//button[@class="btn btn-lg btn-primary pull-xs-right"]')))
-        menu_logout_btn = WebDriverWait(self.browser, 15).until(
-            EC.presence_of_element_located((By.PARTIAL_LINK_TEXT, 'Log out')))
-        assert menu_logout_btn.is_enabled()
+        # menu_logout_btn = WebDriverWait(self.browser, 15).until(
+        #     EC.presence_of_element_located((By.PARTIAL_LINK_TEXT, 'Log out')))
+        # assert menu_logout_btn.is_enabled()
+        profile = WebDriverWait(self.browser, 5).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, 'a[href="#/@Testuser4/"]')))
+        assert profile.text == "Testuser4"
+
 
     # TC_04 Adatok listázása ###########################################################################################
     @allure.title('Adatok listázása')
