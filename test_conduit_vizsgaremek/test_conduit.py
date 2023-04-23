@@ -82,7 +82,7 @@ class TestConduit(object):
     # TC_03 Bejelentkezés tesztelése ###################################################################################
     @allure.title('Bejelentkezés regisztrált felhasználóval')
     def test_login(self):
-        cookie_function(self.browser)
+        # cookie_function(self.browser)
 
         # Bejelentkezés linkre kattintás
         menu_login_btn = self.browser.find_element(By.LINK_TEXT, 'Sign in')
