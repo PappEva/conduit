@@ -61,9 +61,9 @@ class TestConduit(object):
         password_input = self.browser.find_element(By.XPATH, '//input[@type="password"]')
         sign_up_btn = self.browser.find_element(By.XPATH, '//button[contains(text(), "Sign up")]')
 
-        username_input.send_keys(user_registration['username'])
-        email_input.send_keys(user_registration['email'])
-        password_input.send_keys(user_registration['password'])
+        username_input.send_keys(user_login['username'])
+        email_input.send_keys(user_login['email'])
+        password_input.send_keys(user_login['password'])
         sign_up_btn.click()
         time.sleep(2)
 
