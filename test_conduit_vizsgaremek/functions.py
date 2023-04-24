@@ -25,10 +25,10 @@ def login_function(browser):
     password_input.send_keys(user_login['password'])
     sign_in_btn.click()
     time.sleep(3)
-    # menu_logout_btn = WebDriverWait(browser, 30).until(EC.presence_of_element_located((By.LINK_TEXT, 'Log out')))
+    menu_logout_btn = WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.LINK_TEXT, 'Log out')))
     # menu_logout_btn = WebDriverWait(browser, 30).until(
     #     EC.presence_of_element_located((By.PARTIAL_LINK_TEXT, 'Log out')))
-    # assert menu_logout_btn.is_enabled()
+    assert menu_logout_btn.is_enabled()
 
 
 def data_for_delete_function(browser):

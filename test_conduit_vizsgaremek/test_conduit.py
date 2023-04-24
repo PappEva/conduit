@@ -10,7 +10,7 @@ import time
 import csv
 import allure
 from functions import login_function, cookie_function, data_for_delete_function
-from data_for_imports import user_registration, user_login, article, article_for_delete, bio_data_for_modify
+from data_for_imports import user_login, article, article_for_delete, bio_data_for_modify
 
 
 class TestConduit(object):
@@ -33,7 +33,7 @@ class TestConduit(object):
     # TC_01 Adatkezelési nyilatkozat használata ########################################################################
     @allure.title('Adatkezelési nyilatkozat elfogadása')
     def test_cookie(self):
-        # Van cookie panel az oldalon?
+        # Megjelenik a cookie panel az oldalon?
         assert len(self.browser.find_elements(By.ID, 'cookie-policy-panel')) != 0
 
         accept_cookie_btn = self.browser.find_element(By.XPATH,
@@ -41,7 +41,7 @@ class TestConduit(object):
         accept_cookie_btn.click()
         time.sleep(2)
 
-        # Eltűnt a cookie panel?
+        # Eltűnt a cookie panel az oldalról?
         assert len(self.browser.find_elements(By.ID, 'cookie-policy-panel')) == 0
 
     # TC_02 Regisztráció tesztelése ####################################################################################
@@ -82,12 +82,12 @@ class TestConduit(object):
     # TC_03 Bejelentkezés tesztelése ###################################################################################
     @allure.title('Bejelentkezés regisztrált felhasználóval')
     def test_login(self):
-        # cookie_function(self.browser)
+        cookie_function(self.browser)
 
         # Bejelentkezés linkre kattintás
         menu_login_btn = self.browser.find_element(By.LINK_TEXT, 'Sign in')
         menu_login_btn.click()
-        # time.sleep(1)
+
         assert self.browser.current_url == 'http://localhost:1667/#/login'
 
         # Tesztadatok beírása a megfelelő helyekre (data_for_imports.py fájlból)
@@ -100,15 +100,16 @@ class TestConduit(object):
         sign_in_btn.click()
 
         # Megjelent a belépés utáni felhasználói felületen a logout link?
-        # menu_logout_btn = WebDriverWait(self.browser, 5).until(EC.presence_of_element_located((By.LINK_TEXT, 'Log out')))
+        menu_logout_btn = WebDriverWait(self.browser, 10).until(
+            EC.presence_of_element_located((By.LINK_TEXT, 'Log out')))
         # menu_logout_btn = WebDriverWait(self.browser, 15).until(
         #     EC.presence_of_all_elements_located((By.XPATH, '//button[@class="btn btn-lg btn-primary pull-xs-right"]')))
         # menu_logout_btn = WebDriverWait(self.browser, 15).until(
         #     EC.presence_of_element_located((By.PARTIAL_LINK_TEXT, 'Log out')))
-        # assert menu_logout_btn.is_enabled()
-        profile = WebDriverWait(self.browser, 5).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, 'a[href="#/@Testuser4/"]')))
-        assert profile.text == "Testuser4"
+        assert menu_logout_btn.is_enabled()
+        # profile = WebDriverWait(self.browser, 5).until(
+        #     EC.presence_of_element_located((By.CSS_SELECTOR, 'a[href="#/@Testuser4/"]')))
+        # assert profile.text == "Testuser4"
 
     # TC_04 Adatok listázása ##########################################################################################
     @allure.title('Adatok listázása')
@@ -133,7 +134,7 @@ class TestConduit(object):
         login_function(self.browser)
 
         # Oldalszám gombok végigkattintása és listába gyűjtés
-        page_btns = WebDriverWait(self.browser, 5).until(
+        page_btns = WebDriverWait(self.browser, 10).until(
             EC.presence_of_all_elements_located((By.XPATH, '//a[@class="page-link"]')))
         page_num_list = []
         for page_num in page_btns:
@@ -153,7 +154,7 @@ class TestConduit(object):
         login_function(self.browser)
 
         # New article link kattintása
-        menu_new_article_link = WebDriverWait(self.browser, 25).until(
+        menu_new_article_link = WebDriverWait(self.browser, 10).until(
             EC.presence_of_element_located((By.XPATH, '//a[@href="#/editor"]')))
         menu_new_article_link.click()
         # time.sleep(3)
@@ -229,7 +230,6 @@ class TestConduit(object):
 
         # Settings oldal betöltése
         menu_settings_link.click()
-        # time.sleep(3)
         print(self.browser.current_url)
 
         # "Short bio about you" adat módosítása
@@ -252,7 +252,6 @@ class TestConduit(object):
         self.browser.get(url_user_profile)
         time.sleep(2)
         user_bio_text_after = self.browser.find_element(By.TAG_NAME, 'p').text
-        # print(user_bio_text_after)
 
         assert user_bio_text_before != user_bio_text_after
         assert user_bio_text_after == (bio_data_for_modify['text'])
@@ -315,7 +314,7 @@ class TestConduit(object):
                 list_from_file.append(row.rstrip())
         # print(list_from_file)
 
-        # Fájlból visszaolvasott lista és az oldalról eredetileg begyűjtött lista összehasonlítása ellenőrzésként
+        # Létrejött fájlból visszaolvasott és az oldalról eredetileg begyűjtött lista összehasonlítása
         assert list_from_file == popular_tags_list
 
     # TC_11 Kijelentkezés ##############################################################################################
