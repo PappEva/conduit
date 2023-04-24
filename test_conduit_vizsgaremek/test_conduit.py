@@ -102,9 +102,7 @@ class TestConduit(object):
         # Megjelent a belépés utáni felhasználói felületen a logout link?
         menu_logout_btn = WebDriverWait(self.browser, 10).until(
             EC.presence_of_element_located((By.LINK_TEXT, 'Log out')))
-
         assert menu_logout_btn.is_enabled()
-
 
     # TC_04 Adatok listázása ##########################################################################################
     @allure.title('Adatok listázása')
@@ -170,7 +168,6 @@ class TestConduit(object):
 
         # New article létrejöttének ellenőrzése
         new_article_title = WebDriverWait(self.browser, 15).until(EC.presence_of_element_located((By.TAG_NAME, 'h1')))
-
         assert new_article_title.text == (article['title'])
         assert self.browser.current_url == 'http://localhost:1667/#/articles/' + (article['url'])
 
@@ -183,11 +180,9 @@ class TestConduit(object):
 
         # Keresek egy cikket, amihez kommenteket írok
         article_to_comment = self.browser.find_element(By.XPATH, "//h1[contains(text(), 'Lorem ipsum dolor sit amet')]")
-        # article_to_comment = WebDriverWait(self.browser, 10).until(
-        #     EC.presence_of_all_elements_located((By.XPATH, "//h1[contains(text(), 'Lorem ipsum dolor sit amet')]")))
         article_to_comment.click()
         time.sleep(2)
-
+        # Komment beviteli mező azonosítása
         comment_box = self.browser.find_element(By.XPATH, '//textarea[@placeholder="Write a comment..."]')
 
         # Adatforrás megnyitása, beolvasása, és az adatok betöltése
@@ -246,7 +241,6 @@ class TestConduit(object):
         self.browser.get(url_user_profile)
         time.sleep(2)
         user_bio_text_after = self.browser.find_element(By.TAG_NAME, 'p').text
-
         assert user_bio_text_before != user_bio_text_after
         assert user_bio_text_after == (bio_data_for_modify['text'])
 
@@ -323,5 +317,4 @@ class TestConduit(object):
         # Megjelent újra a login gomb?
         menu_login_btn = WebDriverWait(self.browser, 15).until(
             EC.presence_of_element_located((By.LINK_TEXT, 'Sign in')))
-
         assert menu_login_btn.is_enabled()
