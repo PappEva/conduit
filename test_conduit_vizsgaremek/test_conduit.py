@@ -68,7 +68,7 @@ class TestConduit(object):
         time.sleep(2)
 
         # Regisztráció után felugró ablak kezelése és tartalmának ellenőrzése
-        registration_popup_title = WebDriverWait(self.browser, 5).until(
+        registration_popup_title = WebDriverWait(self.browser, 15).until(
             EC.presence_of_element_located((By.XPATH, '//div[@class="swal-title"]')))
         registration_popup_msg = self.browser.find_element(By.XPATH, '//div[@class="swal-text"]')
 
@@ -102,14 +102,9 @@ class TestConduit(object):
         # Megjelent a belépés utáni felhasználói felületen a logout link?
         menu_logout_btn = WebDriverWait(self.browser, 10).until(
             EC.presence_of_element_located((By.LINK_TEXT, 'Log out')))
-        # menu_logout_btn = WebDriverWait(self.browser, 15).until(
-        #     EC.presence_of_all_elements_located((By.XPATH, '//button[@class="btn btn-lg btn-primary pull-xs-right"]')))
-        # menu_logout_btn = WebDriverWait(self.browser, 15).until(
-        #     EC.presence_of_element_located((By.PARTIAL_LINK_TEXT, 'Log out')))
+
         assert menu_logout_btn.is_enabled()
-        # profile = WebDriverWait(self.browser, 5).until(
-        #     EC.presence_of_element_located((By.CSS_SELECTOR, 'a[href="#/@Testuser4/"]')))
-        # assert profile.text == "Testuser4"
+
 
     # TC_04 Adatok listázása ##########################################################################################
     @allure.title('Adatok listázása')
@@ -157,10 +152,9 @@ class TestConduit(object):
         menu_new_article_link = WebDriverWait(self.browser, 10).until(
             EC.presence_of_element_located((By.XPATH, '//a[@href="#/editor"]')))
         menu_new_article_link.click()
-        # time.sleep(3)
 
         # Tesztadatok beírása a megfelelő helyekre (data_for_imports.py fájlból)
-        article_title_input = WebDriverWait(self.browser, 5).until(
+        article_title_input = WebDriverWait(self.browser, 15).until(
             EC.presence_of_element_located((By.XPATH, '//input[@placeholder="Article Title"]')))
         article_about_input = self.browser.find_element(By.XPATH, '//input[@placeholder="What\'s this article about?"]')
         article_text_input = self.browser.find_element(By.XPATH,
@@ -175,7 +169,7 @@ class TestConduit(object):
         publish_article_btn.click()
 
         # New article létrejöttének ellenőrzése
-        new_article_title = WebDriverWait(self.browser, 5).until(EC.presence_of_element_located((By.TAG_NAME, 'h1')))
+        new_article_title = WebDriverWait(self.browser, 15).until(EC.presence_of_element_located((By.TAG_NAME, 'h1')))
 
         assert new_article_title.text == (article['title'])
         assert self.browser.current_url == 'http://localhost:1667/#/articles/' + (article['url'])
@@ -197,7 +191,7 @@ class TestConduit(object):
         comment_box = self.browser.find_element(By.XPATH, '//textarea[@placeholder="Write a comment..."]')
 
         # Adatforrás megnyitása, beolvasása, és az adatok betöltése
-        # with open('comments.csv', 'r') as file:
+        # with open('comments.csv', 'r') as file: # helyi futtatáshoz
         with open('test_conduit_vizsgaremek/comments.csv', 'r') as file:
             comment_rows = csv.reader(file, delimiter=',')
             for row in comment_rows:
@@ -224,7 +218,7 @@ class TestConduit(object):
         # User profil oldalon lévő bio szövegének keresése és mentése
         url_user_profile = ('http://localhost:1667/#/@' + (user_login["username"]) + '/')
         self.browser.get(url_user_profile)
-        menu_settings_link = WebDriverWait(self.browser, 5).until(
+        menu_settings_link = WebDriverWait(self.browser, 15).until(
             EC.presence_of_element_located((By.LINK_TEXT, 'Settings')))
         user_bio_text_before = self.browser.find_element(By.TAG_NAME, 'p').text
 
@@ -233,7 +227,7 @@ class TestConduit(object):
         print(self.browser.current_url)
 
         # "Short bio about you" adat módosítása
-        short_bio_input = WebDriverWait(self.browser, 5).until(
+        short_bio_input = WebDriverWait(self.browser, 15).until(
             EC.presence_of_element_located((By.XPATH, '//textarea[@placeholder="Short bio about you"]')))
         short_bio_input.clear()
         short_bio_input.send_keys(bio_data_for_modify['text'])
@@ -266,7 +260,7 @@ class TestConduit(object):
         data_for_delete_function(self.browser)
 
         # A törlésre szánt cikk betöltése
-        home_btn = WebDriverWait(self.browser, 5).until(
+        home_btn = WebDriverWait(self.browser, 15).until(
             EC.presence_of_element_located((By.XPATH, '//a[@href="#/"]')))
         home_btn.click()
         time.sleep(2)
@@ -275,13 +269,13 @@ class TestConduit(object):
         time.sleep(2)
 
         # Törlés gombra kattintás
-        delete_btn = WebDriverWait(self.browser, 5).until(
+        delete_btn = WebDriverWait(self.browser, 15).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, 'button[class="btn btn-outline-danger btn-sm"]')))
         delete_btn.click()
         time.sleep(1)
 
         # Eltűnt az oldalról létrehozott, majd törölt cikk?
-        home_btn = WebDriverWait(self.browser, 5).until(
+        home_btn = WebDriverWait(self.browser, 15).until(
             EC.presence_of_element_located((By.XPATH, '//a[@href="#/"]')))
         home_btn.click()
         assert len(self.browser.find_elements(By.PARTIAL_LINK_TEXT, f'{article_for_delete["title"]}')) == 0
@@ -302,17 +296,14 @@ class TestConduit(object):
 
         # Lista fájlba mentése, soronként egy tag
         with open('collected_tag_list.csv', 'w') as csvfile:
-            # with open('/test_conduit_vizsgaremek/collected_tag_list.csv', 'w') as csvfile:
             for row in popular_tags_list:
                 csvfile.write(row + "\n")
 
         # Létrejött fájl tartalmának visszaolvasása listába (soremelés törléssel)
         list_from_file = []
         with open('collected_tag_list.csv', 'r') as saved_content:
-            # with open('/test_conduit_vizsgaremek/collected_tag_list.csv', 'r') as saved_content:
             for row in saved_content:
                 list_from_file.append(row.rstrip())
-        # print(list_from_file)
 
         # Létrejött fájlból visszaolvasott és az oldalról eredetileg begyűjtött lista összehasonlítása
         assert list_from_file == popular_tags_list
@@ -324,13 +315,13 @@ class TestConduit(object):
         login_function(self.browser)
 
         # Kilépés gomb azonosítása és kattintás
-        menu_logout_btn = WebDriverWait(self.browser, 5).until(
+        menu_logout_btn = WebDriverWait(self.browser, 15).until(
             EC.presence_of_element_located((By.LINK_TEXT, 'Log out')))
         menu_logout_btn.click()
         time.sleep(2)
 
         # Megjelent újra a login gomb?
-        menu_login_btn = WebDriverWait(self.browser, 5).until(
+        menu_login_btn = WebDriverWait(self.browser, 15).until(
             EC.presence_of_element_located((By.LINK_TEXT, 'Sign in')))
 
         assert menu_login_btn.is_enabled()

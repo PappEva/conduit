@@ -26,8 +26,6 @@ def login_function(browser):
     sign_in_btn.click()
     time.sleep(3)
     menu_logout_btn = WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.LINK_TEXT, 'Log out')))
-    # menu_logout_btn = WebDriverWait(browser, 30).until(
-    #     EC.presence_of_element_located((By.PARTIAL_LINK_TEXT, 'Log out')))
     assert menu_logout_btn.is_enabled()
 
 
@@ -35,7 +33,6 @@ def data_for_delete_function(browser):
     menu_new_article_link = WebDriverWait(browser, 5).until(
         EC.presence_of_element_located((By.XPATH, '//a[@href="#/editor"]')))
     menu_new_article_link.click()
-    # time.sleep(3)
 
     article_title_input = WebDriverWait(browser, 5).until(
         EC.presence_of_element_located((By.XPATH, '//input[@placeholder="Article Title"]')))
@@ -51,5 +48,3 @@ def data_for_delete_function(browser):
     article_tags_input.send_keys(article_for_delete['tags'])
     publish_article_btn.click()
     time.sleep(2)
-    # new_article_for_delete_title = WebDriverWait(browser, 5).until(EC.presence_of_element_located((By.TAG_NAME, 'h1')))
-    # print(new_article_for_delete_title)
